@@ -1,4 +1,4 @@
-var Piece = function(color, blocks, tileSize, xTiles, yTiles,gameBoard) {
+var Piece = function(color, blocks, tileSize, xTiles, yTiles, gameBoard) {
     var that = this;
     this.locationY = -blocks[0].length;
     this.locationX = 0;
@@ -12,14 +12,14 @@ var Piece = function(color, blocks, tileSize, xTiles, yTiles,gameBoard) {
             return false;
         }
         //Check not met another piece
-        for(var x=0;x<blocks.length;x++){
-                for(var y = 0 ;y<blocks[x].length;y++){
-                    if(blocks[x][y] == 1){
-                            if(gameBoard.tiles[that.locationX + x][that.locationY + y] == 1){
-                                    return false;
-                            }
+        for (var x = 0; x < blocks.length; x++) {
+            for (var y = 0; y < blocks[x].length; y++) {
+                if (blocks[x][y] == 1) {
+                    if (gameBoard.tiles[that.locationX + x][that.locationY + y] == 1) {
+                        return false;
                     }
                 }
+            }
         }
         return true;
     };
@@ -31,7 +31,7 @@ var Piece = function(color, blocks, tileSize, xTiles, yTiles,gameBoard) {
             this.locationX = this.previousLocationX;
             this.locationY = this.previousLocationY;
             this.done = true;
-            gameBoard.freezePiece(blocks,this.locationX,this.locationY);
+            gameBoard.freezePiece(blocks, this.locationX, this.locationY);
         }
     };
 

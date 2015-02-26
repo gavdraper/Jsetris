@@ -15,6 +15,14 @@ var shapes = function() {
         ]
     );
 
+    //Flipping the bird
+    collection.push(
+                    [
+                    [0,1],
+                    [1,1],
+                    [0,1]
+                    ]);
+
     var chooseShape = function() {
         return collection[(Math.floor((Math.random() * collection.length)))];
     };
