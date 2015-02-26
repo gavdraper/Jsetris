@@ -8,7 +8,7 @@ var Jsetris = function(tileSize, xTiles, yTiles) {
     //Jsetris!!!!
     var gameSurface = new DoubleBuffer(tileSize * xTiles, tileSize * yTiles);
     var gameBoard = new Board(tileSize, xTiles, yTiles);
-    var currentPiece = new Piece("red", shapes.select(), tileSize, xTiles, yTiles);
+    var currentPiece = new Piece("red", shapes.select(), tileSize, xTiles, yTiles,gameBoard);
 
     var gameLoop = function() {
         update();
@@ -17,6 +17,9 @@ var Jsetris = function(tileSize, xTiles, yTiles) {
     };
 
     var update = function() {
+        if (currentPiece.done) {
+            currentPiece = new Piece("red", shapes.select(), tileSize, xTiles, yTiles, gameBoard);
+        }
         currentPiece.update(gameBoard);
         gameBoard.update();
     };
