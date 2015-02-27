@@ -1,11 +1,11 @@
 exports = function(width, height) {
-    bufferSurface = document.createElement("canvas");
-    bufferCtx = bufferSurface.getContext("2d");
+    var bufferSurface = document.createElement("canvas");
+    var bufferCtx = bufferSurface.getContext("2d");
     bufferSurface.width = width;
     bufferSurface.height = height;
 
-    surface = document.createElement("canvas");
-    surfaceCtx = surface.getContext("2d");
+    var surface = document.createElement("canvas");
+    var surfaceCtx = surface.getContext("2d");
     surface.width = width;
     surface.height = height;
     document.getElementById("main").appendChild(surface);

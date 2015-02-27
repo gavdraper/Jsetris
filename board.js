@@ -20,14 +20,13 @@ exports = function(tileSize, tilesX, tilesY, onGameOver) {
 
     this.draw = function(gameSurface) {
         //draw parked pieces
-        var ctx = gameSurface.getCtx();
-        ctx.fillStyle = "gray";
-        ctx.fillRect(0, 0, tileSize * tilesX, tileSize * tilesY);
+        gameSurface.fillStyle = "gray";
+        gameSurface.fillRect(0, 0, tileSize * tilesX, tileSize * tilesY);
         for (var x = 0; x < that.tiles.length; x++) {
             for (var y = 0; y < that.tiles[x].length; y++) {
                 if (that.tiles[x][y] === 1) {
-                    ctx.fillStyle = "blue";
-                    ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+                    gameSurface.fillStyle = "blue";
+                    gameSurface.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
                 }
             }
         }

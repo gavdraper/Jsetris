@@ -44,12 +44,11 @@ var Piece = function (color, blocks, tileSize, xTiles, yTiles, gameBoard, onPiec
     };
 
     this.draw = function(gameSurface) {
-        var ctx = gameSurface.getCtx();
-        ctx.fillStyle = color;
+        gameSurface.fillStyle = color;
         for (var x = 0; x < blocks.length; x++) {
             for (var y = 0; y < blocks[x].length; y++) {
                 if (blocks[x][y] === 1) {
-                    ctx.fillRect(
+                    gameSurface.fillRect(
                         (that.locationX + x) * tileSize, (that.locationY + y) * tileSize,
                         tileSize,
                         tileSize);

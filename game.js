@@ -23,8 +23,9 @@ var Jsetris = function (tileSize, xTiles, yTiles) {
 
     var draw = function () {
         gameSurface.beginDraw();
-        gameBoard.draw(gameSurface);
-        currentPiece.draw(gameSurface);
+        var ctx = gameSurface.getCtx();
+        gameBoard.draw(ctx);
+        currentPiece.draw(ctx);
         gameSurface.endDraw();
     };
 
@@ -47,7 +48,6 @@ var Jsetris = function (tileSize, xTiles, yTiles) {
     }
 
     var newGame = function () {
-        //TODO Add reset game code here
         gameBoard =  new Board(tileSize, xTiles, yTiles, onGameOver);
         currentPiece = new Piece("red", shapes.select(), tileSize, xTiles, yTiles, gameBoard, onPieceDone);
         gameLoop();
@@ -55,7 +55,6 @@ var Jsetris = function (tileSize, xTiles, yTiles) {
 
     newGame();
 };
-
 
 //Todo base tile size on screen size
 var game = new Jsetris(60, 10, 12);
