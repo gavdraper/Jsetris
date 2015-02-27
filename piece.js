@@ -10,7 +10,7 @@ var Piece = function(color, shape, tileSize, xTiles, yTiles, gameBoard, onPieceD
     var previousLocationY = -that.blocks[0].length;
     var previousLocationX = 0;
 
-    var fallInterval = 0.45-(gameBoard.score/100);
+    var fallInterval = 0.50-(gameBoard.score/100);
     var elapsedFallTime = 0;
 
 
