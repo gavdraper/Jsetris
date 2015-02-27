@@ -1,9 +1,10 @@
 exports = function(tileSize, tilesX, tilesY, onGameOver, onScore) {
     var that = this;
     this.tiles = [];
-    
+    this.score = 0;
+
     //for (var i = 0; i < tilesX; i++) {
-        //this.tiles.push([]);
+    //this.tiles.push([]);
     //}
 
     for (var x = 0; x < tilesX; x++) {
@@ -34,7 +35,7 @@ exports = function(tileSize, tilesX, tilesY, onGameOver, onScore) {
         }
     };
 
-    this.freezePiece = function (piece) {
+    this.freezePiece = function(piece) {
         for (var x = 0; x < piece.blocks.length; x++) {
             for (var y = 0; y < piece.blocks[x].length; y++) {
                 if (piece.blocks[x][y] === 1) {
@@ -65,7 +66,6 @@ exports = function(tileSize, tilesX, tilesY, onGameOver, onScore) {
         //Increment score and remove complete lines
         for (var i = 0; i < completedLines.length; i++) {
             if (completedLines[i] === 1) {
-                console.log(that.tiles);
                 //Remove line
                 completedLineCount++;
                 for (var x = 0; x < that.tiles.length; x++) {
@@ -73,14 +73,17 @@ exports = function(tileSize, tilesX, tilesY, onGameOver, onScore) {
                     that.tiles[x].splice(i, 1);
                     //Add new row to top
                     that.tiles[x].unshift(0);
-                    
+
                 }
 
             }
         }
 
-        if (completedLineCount > 0)
+        if (completedLineCount > 0) {
+            this.score += completedLineCount;
+            console.log(this.score);
             onScore(completedLineCount);
+        }
 
     };
 };
