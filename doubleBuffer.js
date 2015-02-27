@@ -8,7 +8,7 @@ exports = function(width, height) {
     surfaceCtx = surface.getContext("2d");
     surface.width = width;
     surface.height = height;
-    document.body.appendChild(surface);
+    document.getElementById("main").appendChild(surface);
 
     var drawing = false;
 
