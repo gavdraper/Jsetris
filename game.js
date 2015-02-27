@@ -8,20 +8,17 @@ var Jsetris = function(tileSize, xTiles, yTiles) {
     //Jsetris!!!!
     var gameSurface = new DoubleBuffer(tileSize * xTiles, tileSize * yTiles);
     var gameBoard = new Board(tileSize, xTiles, yTiles);
-    var currentPiece = new Piece("red", shapes.select(), tileSize, xTiles, yTiles,gameBoard);
+    var currentPiece = new Piece("red", shapes.select(), tileSize, xTiles, yTiles, gameBoard);
+    var lastLoopTime = Date.now();
+    var gameTime;
 
-    var gameLoop = function() {
-        update();
-        draw();
-        setTimeout(gameLoop, 300);
-    };
-
-    var update = function() {
+    var update = function (timePassed) {
+        gameTime += timePassed;
         if (currentPiece.done) {
             currentPiece = new Piece("red", shapes.select(), tileSize, xTiles, yTiles, gameBoard);
         }
-        currentPiece.update(gameBoard);
-        gameBoard.update();
+        currentPiece.update(timePassed);
+        gameBoard.update(timePassed);
     };
 
     var draw = function() {
@@ -29,6 +26,15 @@ var Jsetris = function(tileSize, xTiles, yTiles) {
         gameBoard.draw(gameSurface);
         currentPiece.draw(gameSurface);
         gameSurface.endDraw();
+    };
+
+    var gameLoop = function () {
+        var now = Date.now();
+        var timePassed = (now - lastLoopTime) / 1000.0;
+        update(timePassed);
+        draw();
+        lastLoopTime = now;
+        requestAnimationFrame(gameLoop);
     };
 
     var newGame = function() {

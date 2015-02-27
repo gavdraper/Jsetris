@@ -1,21 +1,25 @@
 var Piece = function(color, blocks, tileSize, xTiles, yTiles, gameBoard) {
-    var that = this;
-    this.locationY = -blocks[0].length;
-    this.locationX = 0;
-    this.previousLocationY = -blocks[0].length;
-    this.previousLocationX = 0;
+    var locationY = -blocks[0].length;
+    var locationX = 0;
+    var previousLocationY = -blocks[0].length;
+    var previousLocationX = 0;
     this.done = false;
+
+    var updateInterval = 0.3;
+    var elapsedTime = 0;
 
     var isLocationValid = function() {
         //Don't go off bottom of screen
-        if (that.locationY + blocks[0].length > yTiles) {
-            return false;
+        if (locationY + blocks[0].length > yTiles) {
+            if (locationY + blocks[0].length > yTiles) {
+                return false;
+            }
         }
         //Check not met another piece
         for (var x = 0; x < blocks.length; x++) {
             for (var y = 0; y < blocks[x].length; y++) {
-                if (blocks[x][y] == 1) {
-                    if (gameBoard.tiles[that.locationX + x][that.locationY + y] == 1) {
+                if (blocks[x][y] === 1) {
+                    if (gameBoard.tiles[locationX + x][locationY + y] === 1) {
                         return false;
                     }
                 }
@@ -24,14 +28,19 @@ var Piece = function(color, blocks, tileSize, xTiles, yTiles, gameBoard) {
         return true;
     };
 
-    this.update = function() {
-        this.previousLocationY = this.locationY;
-        this.locationY++;
-        if (!isLocationValid()) {
-            this.locationX = this.previousLocationX;
-            this.locationY = this.previousLocationY;
-            this.done = true;
-            gameBoard.freezePiece(blocks, this.locationX, this.locationY);
+    this.update = function (gameTime) {
+        console.log(gameTime);
+        elapsedTime += gameTime;
+        if (updateInterval <= elapsedTime) {
+            previousLocationY = locationY;
+            locationY++;
+            if (!isLocationValid()) {
+                locationX = previousLocationX;
+                locationY = previousLocationY;
+                this.done = true;
+                gameBoard.freezePiece(blocks, locationX, locationY);
+            }
+            elapsedTime = 0;
         }
     };
 
@@ -40,9 +49,9 @@ var Piece = function(color, blocks, tileSize, xTiles, yTiles, gameBoard) {
         ctx.fillStyle = color;
         for (var x = 0; x < blocks.length; x++) {
             for (var y = 0; y < blocks[x].length; y++) {
-                if (blocks[x][y] == 1) {
+                if (blocks[x][y] === 1) {
                     ctx.fillRect(
-                        (this.locationX + x) * tileSize, (this.locationY + y) * tileSize,
+                        (locationX + x) * tileSize, (locationY + y) * tileSize,
                         tileSize,
                         tileSize);
                 }

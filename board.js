@@ -11,7 +11,7 @@ exports = function(tileSize, tilesX, tilesY) {
         }
     }
 
-    this.update = function() {
+    this.update = function(gameTime) {
         //Check for complete lines
         //  Remove any
         //  Add Score
