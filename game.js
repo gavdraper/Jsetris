@@ -39,4 +39,6 @@ var Jsetris = function(tileSize, xTiles, yTiles) {
     newGame();
 };
 
-var game = new Jsetris(30, 10, 12);
+
+//Todo base tile size on screen size
+var game = new Jsetris(60, 10, 12);
