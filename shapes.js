@@ -1,5 +1,5 @@
 var Piece = require("piece");
-var shapes = function () {
+var shapes = function() {
     var collection = [];
 
     //Straight Line
@@ -9,7 +9,7 @@ var shapes = function () {
             [0, 0, 0, 0],
             [1, 1, 1, 1],
             [0, 0, 0, 0],
-            [0, 0 ,0 ,0]
+            [0, 0, 0, 0]
         ],
         //Rotation 2
         [
@@ -17,45 +17,97 @@ var shapes = function () {
             [0, 0, 1, 0],
             [0, 0, 1, 0],
             [0, 0, 1, 0]
-            ]]);
+        ]
+    ]);
+
+    //Square
+    collection.push([
+        //Rotation 1
+        [
+            [1, 1],
+            [1, 1]
+        ]
+    ]);
+
+    //Backwards L
+    collection.push([
+        //Rotation 1
+        [
+            [0, 0, 1],
+            [1, 1, 1]
+        ],
+        //Rotation 2
+        [
+            [1,1],
+            [0,1],
+            [0,1]
+        ],
+        //Rotation 3
+        [
+            [1,1,1],
+            [1,0,0]
+        ],
+        //Rotation 4
+        [
+            [1,0],
+            [1,0],
+            [1,1]
+        ]
+    ]);
 
     //L Shape
     collection.push([
         //Rotation 1
-        [   [1, 1, 1],
-            [0, 0, 1]],
+        [
+            [1, 1, 1],
+            [0, 0, 1]
+        ],
         //Rotation 2
-        [   [1, 1],
+        [
+            [1, 1],
             [1, 0],
-            [1, 0]],
+            [1, 0]
+        ],
         //rotation 3
-        [   [1, 0, 0],
-            [1, 1, 1]],
+        [
+            [1, 0, 0],
+            [1, 1, 1]
+        ],
         // roration 4
-        [   [0, 1],
+        [
             [0, 1],
-            [1, 1]]
-            ]);
+            [0, 1],
+            [1, 1]
+        ]
+    ]);
 
     //Flipping the bird
     collection.push([
         //Rotation 1
-        [   [0, 1],
+        [
+            [0, 1],
             [1, 1],
-            [0, 1]],
+            [0, 1]
+        ],
         //Rotation 2
-        [   [1, 1, 1],
-            [0, 1, 0]],
+        [
+            [1, 1, 1],
+            [0, 1, 0]
+        ],
         //Rotation 3
-        [   [1, 0],
+        [
+            [1, 0],
             [1, 1],
-            [1, 0]],
+            [1, 0]
+        ],
         //Rotation 4
-        [   [0, 1, 0],
-            [1, 1, 1]]
-        ]);
+        [
+            [0, 1, 0],
+            [1, 1, 1]
+        ]
+    ]);
 
-    var chooseShape = function () {
+    var chooseShape = function() {
         return collection[(Math.floor((Math.random() * collection.length)))];
     };
 
