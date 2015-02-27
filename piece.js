@@ -1,17 +1,18 @@
-var Piece = function(color, blocks, tileSize, xTiles, yTiles, gameBoard) {
-    var locationY = -blocks[0].length;
-    var locationX = 0;
+var Piece = function (color, blocks, tileSize, xTiles, yTiles, gameBoard, onPieceDone, onGameOver) {
+    var that = this;
+    this.locationY = -blocks[0].length;
+    this.locationX = 0;
+    this.blocks = blocks;
     var previousLocationY = -blocks[0].length;
     var previousLocationX = 0;
-    this.done = false;
 
-    var updateInterval = 0.3;
+    var updateInterval = 0.1;
     var elapsedTime = 0;
 
     var isLocationValid = function() {
         //Don't go off bottom of screen
-        if (locationY + blocks[0].length > yTiles) {
-            if (locationY + blocks[0].length > yTiles) {
+        if (that.locationY + blocks[0].length > yTiles) {
+            if (that.locationY + blocks[0].length > yTiles) {
                 return false;
             }
         }
@@ -19,26 +20,24 @@ var Piece = function(color, blocks, tileSize, xTiles, yTiles, gameBoard) {
         for (var x = 0; x < blocks.length; x++) {
             for (var y = 0; y < blocks[x].length; y++) {
                 if (blocks[x][y] === 1) {
-                    if (gameBoard.tiles[locationX + x][locationY + y] === 1) {
+                    if (gameBoard.tiles[that.locationX + x][that.locationY + y] === 1) {
                         return false;
                     }
                 }
             }
         }
         return true;
-    };
+    }; 
 
     this.update = function (gameTime) {
-        console.log(gameTime);
         elapsedTime += gameTime;
         if (updateInterval <= elapsedTime) {
-            previousLocationY = locationY;
-            locationY++;
+            previousLocationY = that.locationY;
+            that.locationY++;
             if (!isLocationValid()) {
-                locationX = previousLocationX;
-                locationY = previousLocationY;
-                this.done = true;
-                gameBoard.freezePiece(blocks, locationX, locationY);
+                that.locationX = previousLocationX;
+                that.locationY = previousLocationY;
+                onPieceDone();
             }
             elapsedTime = 0;
         }
@@ -51,7 +50,7 @@ var Piece = function(color, blocks, tileSize, xTiles, yTiles, gameBoard) {
             for (var y = 0; y < blocks[x].length; y++) {
                 if (blocks[x][y] === 1) {
                     ctx.fillRect(
-                        (locationX + x) * tileSize, (locationY + y) * tileSize,
+                        (that.locationX + x) * tileSize, (that.locationY + y) * tileSize,
                         tileSize,
                         tileSize);
                 }

@@ -1,4 +1,4 @@
-var Jsetris = function(tileSize, xTiles, yTiles) {
+var Jsetris = function (tileSize, xTiles, yTiles) {
     //Constructor Functions
     var DoubleBuffer = require("doubleBuffer");
     var Board = require("board");
@@ -7,8 +7,8 @@ var Jsetris = function(tileSize, xTiles, yTiles) {
     var shapes = require("shapes");
     //Jsetris!!!!
     var gameSurface = new DoubleBuffer(tileSize * xTiles, tileSize * yTiles);
-    var gameBoard = new Board(tileSize, xTiles, yTiles);
-    var currentPiece = new Piece("red", shapes.select(), tileSize, xTiles, yTiles, gameBoard);
+    var gameBoard;
+    var currentPiece;
     var lastLoopTime = Date.now();
     var gameTime;
 
@@ -21,7 +21,7 @@ var Jsetris = function(tileSize, xTiles, yTiles) {
         gameBoard.update(timePassed);
     };
 
-    var draw = function() {
+    var draw = function () {
         gameSurface.beginDraw();
         gameBoard.draw(gameSurface);
         currentPiece.draw(gameSurface);
@@ -37,8 +37,19 @@ var Jsetris = function(tileSize, xTiles, yTiles) {
         requestAnimationFrame(gameLoop);
     };
 
-    var newGame = function() {
+    var onGameOver = function () {
+        newGame();
+    }
+
+    var onPieceDone = function() {
+        gameBoard.freezePiece(currentPiece);
+        currentPiece = new Piece("red", shapes.select(), tileSize, xTiles, yTiles, gameBoard, onPieceDone);
+    }
+
+    var newGame = function () {
         //TODO Add reset game code here
+        gameBoard =  new Board(tileSize, xTiles, yTiles, onGameOver);
+        currentPiece = new Piece("red", shapes.select(), tileSize, xTiles, yTiles, gameBoard, onPieceDone);
         gameLoop();
     };
 
