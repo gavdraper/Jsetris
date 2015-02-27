@@ -1,4 +1,4 @@
-exports = function(width, height) {
+exports = function(width, height, divId) {
     var bufferSurface = document.createElement("canvas");
     var bufferCtx = bufferSurface.getContext("2d");
     bufferSurface.width = width;
@@ -8,7 +8,7 @@ exports = function(width, height) {
     var surfaceCtx = surface.getContext("2d");
     surface.width = width;
     surface.height = height;
-    document.getElementById("main").appendChild(surface);
+    document.getElementById(divId).appendChild(surface);
 
     var drawing = false;
 

@@ -6,19 +6,20 @@ var Jsetris = function (tileSize, xTiles, yTiles) {
     //Objects
     var shapes = require("shapes");
     //Jsetris!!!!
-    var gameSurface = new DoubleBuffer(tileSize * xTiles, tileSize * yTiles);
+    var gameSurface = new DoubleBuffer(tileSize * xTiles, tileSize * yTiles, "board");
     var gameBoard;
     var currentPiece;
     var lastLoopTime = Date.now();
     var gameTime;
+    var pressedKey;
+    var lastPressedKey;
+    var lineScore;
 
     var update = function (timePassed) {
         gameTime += timePassed;
-        if (currentPiece.done) {
-            currentPiece = new Piece("red", shapes.select(), tileSize, xTiles, yTiles, gameBoard);
-        }
-        currentPiece.update(timePassed);
-        gameBoard.update(timePassed);
+        currentPiece.update(timePassed, pressedKey, lastPressedKey === pressedKey);
+        gameBoard.update(timePassed, lastPressedKey === pressedKey);
+        lastPressedKey = pressedKey;
     };
 
     var draw = function () {
@@ -42,19 +43,36 @@ var Jsetris = function (tileSize, xTiles, yTiles) {
         newGame();
     }
 
-    var onPieceDone = function() {
+    var onPieceDone = function () {
         gameBoard.freezePiece(currentPiece);
         currentPiece = new Piece("red", shapes.select(), tileSize, xTiles, yTiles, gameBoard, onPieceDone);
     }
+    var onScore = function (_lineScore) {
+        lineScore += _lineScore;
+        document.getElementById("score").innerText = "Score : " + lineScore + " lines";
+    };
 
     var newGame = function () {
-        gameBoard =  new Board(tileSize, xTiles, yTiles, onGameOver);
+        lineScore = 0;
+        document.getElementById("score").innerText = "Score : " + lineScore + " lines";
+        gameBoard = new Board(tileSize, xTiles, yTiles, onGameOver, onScore);
         currentPiece = new Piece("red", shapes.select(), tileSize, xTiles, yTiles, gameBoard, onPieceDone);
         gameLoop();
     };
+
+    var onKeyDown = function (e) {
+        pressedKey = e.keyCode;
+    }
+
+    var onKeyUp = function (e) {
+        pressedKey = null;
+    }
+
+    document.onkeydown = onKeyDown;
+    document.onkeyup = onKeyUp;
 
     newGame();
 };
 
 //Todo base tile size on screen size
-var game = new Jsetris(60, 10, 12);
+var game = new Jsetris(30, 10, 20);
