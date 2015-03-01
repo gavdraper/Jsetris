@@ -1,0 +1,22 @@
+{
+  "name": "Jsetris",
+  "version": "1.0.0",
+  "description": "Javasciprt Tetris Clone using Canvas.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gavdraper/Jsetris.git"
+  },
+  "author": "Gavin Draper",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gavdraper/Jsetris/issues"
+  },
+  "homepage": "https://github.com/gavdraper/Jsetris",
+  "devDependencies": {
+    "gulp": "^3.8.11"
+  }
+}
