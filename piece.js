@@ -5,10 +5,10 @@ var Piece = function (color, shape, tileSize, xTiles, yTiles, gameBoard, onPiece
     var previousShapeRotation = 0;
     this.blocks = shape[0];
     this.locationY = -that.blocks[0].length;
-    this.locationX = 0;
+    this.locationX = Math.floor(xTiles/2)-1;
 
     var previousLocationY = -that.blocks[0].length;
-    var previousLocationX = 0;
+    var previousLocationX = Math.floor(xTiles / 2)-1;
 
     var fallInterval = 0.50 - (gameBoard.score / 100);
     var elapsedFallTime = 0;
