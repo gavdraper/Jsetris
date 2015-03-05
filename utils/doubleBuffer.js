@@ -4,6 +4,9 @@ exports = function(width, height, divId) {
     bufferSurface.width = width;
     bufferSurface.height = height;
 
+    this.width = width;
+    this.height = height;
+
     var surface = document.createElement("canvas");
     var surfaceCtx = surface.getContext("2d");
     surface.width = width;

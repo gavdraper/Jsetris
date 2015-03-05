@@ -10,14 +10,11 @@ var Piece = function (color, shape, tileSize, xTiles, yTiles, gameBoard, onPiece
     var previousLocationY = -that.blocks[0].length;
     var previousLocationX = 0;
 
-    var fallInterval = 0.19;
+    var fallInterval = 0.50 - (gameBoard.score / 100);
     var elapsedFallTime = 0;
-    var elapsedMoveTime = 0;
 
-
-    var lastKeyPress;
-    var keyRepeatSpeed = 0.12;
-    var repeatTimer = 0;
+    var leftRightRepeatSpeed = 0.1;
+    var leftRightRepeatTimer = 0;
 
     var isLocationValid = function () {
         for (var x = 0; x < that.blocks.length; x++) {
@@ -54,8 +51,7 @@ var Piece = function (color, shape, tileSize, xTiles, yTiles, gameBoard, onPiece
         if (rotate) {
             if (shapeRotation < (shape.length - 1)) {
                 shapeRotation++;
-            }
-            else {
+            } else {
                 shapeRotation = 0;
             }
             that.blocks = shape[shapeRotation];
@@ -79,41 +75,44 @@ var Piece = function (color, shape, tileSize, xTiles, yTiles, gameBoard, onPiece
 
     };
 
-    this.update = function (gameTime, keyPressed, keyHeldDown) {
+    this.update = function (gameTime, keyboard) {
+        var leftState = keyboard.isPressed(keyboard.LEFT);
+        var rightState = keyboard.isPressed(keyboard.RIGHT);
+        var downState = keyboard.isPressed(keyboard.DOWN);
+        var spaceState = keyboard.isPressed(keyboard.SPACE);
+
+
         elapsedFallTime += gameTime;
-        repeatTimer += gameTime;
+        leftRightRepeatTimer += gameTime;
+        //console.log(fallInterval + " : " + elapsedFallTime)
         if (fallInterval <= elapsedFallTime) {
             //Move Down
             tryMove(0, 1, false, onPieceDone);
             elapsedFallTime = 0;
         }
-        
-        if (!keyHeldDown) {
-            if (keyPressed === 40) {
-                //Move down
-                while (tryMove(0, 1)) { };
-            }
-            if (keyPressed === 32) {
-                //Rotate piece
-                tryMove(0, 0, true);
-            }
-        }
-        if(!keyHeldDown || repeatTimer > keyRepeatSpeed) {
-            repeatTimer = 0;
 
-            repeatTimer += gameTime;
-            if (keyPressed === 37) {
-                //Move Left
-                tryMove(-1, 0);
-            } else if (keyPressed === 39) {
-                //Move Right
-                tryMove(1, 0);
-            }
-            elapsedMoveTime = 0;
-            lastKeyPress = keyPressed;
+        if (downState.pressed && !downState.heldDown) {
+            //Move down
+            while (tryMove(0, 1)) { }
         }
 
+        if (spaceState.pressed && !spaceState.heldDown) {
+            //Rotate piece
+            tryMove(0, 0, true);
+        }
+
+        if (leftState.pressed && (!leftState.heldDown || leftRightRepeatTimer > leftRightRepeatSpeed)) {
+            //Move Left
+            tryMove(-1, 0);
+            leftRightRepeatTimer = 0;
+        }
+        else if (rightState.pressed && (!rightState.heldDown || leftRightRepeatTimer > leftRightRepeatSpeed)) {
+            //Move Right
+            tryMove(1, 0);
+            leftRightRepeatTimer = 0;
+        }
     };
+
 
 
 

@@ -1,9 +1,10 @@
-exports = function(tileSize, tilesX, tilesY, onGameOver, onScore) {
+exports = function (tileSize, tilesX, tilesY, onGameOver, onScore) {
     var that = this;
     this.tiles = [];
-    
+    this.score = 0;
+
     //for (var i = 0; i < tilesX; i++) {
-        //this.tiles.push([]);
+    //this.tiles.push([]);
     //}
 
     for (var x = 0; x < tilesX; x++) {
@@ -13,14 +14,10 @@ exports = function(tileSize, tilesX, tilesY, onGameOver, onScore) {
         }
     }
 
-    this.update = function(gameTime) {
-        //Check for complete lines
-        //  Remove any
-        //  Add Score
-        //  Increment level?
+    this.update = function (gameTime) {
     };
 
-    this.draw = function(gameSurface) {
+    this.draw = function (gameSurface) {
         //draw parked pieces
         gameSurface.fillStyle = "gray";
         gameSurface.fillRect(0, 0, tileSize * tilesX, tileSize * tilesY);
@@ -65,7 +62,6 @@ exports = function(tileSize, tilesX, tilesY, onGameOver, onScore) {
         //Increment score and remove complete lines
         for (var i = 0; i < completedLines.length; i++) {
             if (completedLines[i] === 1) {
-                console.log(that.tiles);
                 //Remove line
                 completedLineCount++;
                 for (var x = 0; x < that.tiles.length; x++) {
@@ -73,14 +69,16 @@ exports = function(tileSize, tilesX, tilesY, onGameOver, onScore) {
                     that.tiles[x].splice(i, 1);
                     //Add new row to top
                     that.tiles[x].unshift(0);
-                    
+
                 }
 
             }
         }
 
-        if (completedLineCount > 0)
+        if (completedLineCount > 0) {
+            this.score += completedLineCount;
             onScore(completedLineCount);
+        }
 
     };
 };
