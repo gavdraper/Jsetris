@@ -1,19 +1,20 @@
 var Piece = function (color, shape, tileSize, xTiles, yTiles, gameBoard, onPieceDone, onGameOver) {
     var that = this;
-    this.shape = shape;
+    var rotations = shape.rotations;
+    this.color = shape.color;
     var shapeRotation = 0;
     var previousShapeRotation = 0;
-    this.blocks = shape[0];
+    this.blocks = shape.rotations[0];
     this.locationY = -that.blocks[0].length;
-    this.locationX = Math.floor(xTiles/2)-1;
+    this.locationX = Math.floor(xTiles / 2) - 1;
 
     var previousLocationY = -that.blocks[0].length;
-    var previousLocationX = Math.floor(xTiles / 2)-1;
+    var previousLocationX = Math.floor(xTiles / 2) - 1;
 
     var fallInterval = 0.50 - (gameBoard.score / 100);
     var elapsedFallTime = 0;
 
-    var leftRightRepeatSpeed = 0.1;
+    var leftRightRepeatSpeed = 0.13;
     var leftRightRepeatTimer = 0;
 
     var isLocationValid = function () {
@@ -33,7 +34,7 @@ var Piece = function (color, shape, tileSize, xTiles, yTiles, gameBoard, onPiece
                         return false;
                     }
                     //Check not met another piece
-                    if (gameBoard.tiles[that.locationX + x][that.locationY + y] === 1) {
+                    if (that.locationY + y > 0 && gameBoard.tiles[that.locationX + x][that.locationY + y] !== 0) {
                         return false;
                     }
                 }
@@ -49,12 +50,12 @@ var Piece = function (color, shape, tileSize, xTiles, yTiles, gameBoard, onPiece
         that.locationX += x;
         that.locationY += y;
         if (rotate) {
-            if (shapeRotation < (shape.length - 1)) {
+            if (shapeRotation < (rotations.length - 1)) {
                 shapeRotation++;
             } else {
                 shapeRotation = 0;
             }
-            that.blocks = shape[shapeRotation];
+            that.blocks = rotations[shapeRotation];
         }
 
         if (!isLocationValid()) {
@@ -62,9 +63,10 @@ var Piece = function (color, shape, tileSize, xTiles, yTiles, gameBoard, onPiece
                 that.locationX = previousLocationX;
             if (y !== 0)
                 that.locationY = previousLocationY;
-            if (rotate)
+            if (rotate) {
                 shapeRotation = previousShapeRotation;
-            that.blocks = shape[previousShapeRotation];
+                that.blocks = rotations[previousShapeRotation];
+            }
 
             if (onInvalidMove) {
                 onInvalidMove();
@@ -84,7 +86,6 @@ var Piece = function (color, shape, tileSize, xTiles, yTiles, gameBoard, onPiece
 
         elapsedFallTime += gameTime;
         leftRightRepeatTimer += gameTime;
-        //console.log(fallInterval + " : " + elapsedFallTime)
         if (fallInterval <= elapsedFallTime) {
             //Move Down
             tryMove(0, 1, false, onPieceDone);
@@ -117,14 +118,23 @@ var Piece = function (color, shape, tileSize, xTiles, yTiles, gameBoard, onPiece
 
 
     this.draw = function (gameSurface) {
-        gameSurface.fillStyle = color;
+        var ctx = gameSurface.getCtx();
+        ctx.fillStyle = that.color;
         for (var x = 0; x < that.blocks.length; x++) {
             for (var y = 0; y < that.blocks[x].length; y++) {
                 if (that.blocks[x][y] === 1) {
-                    gameSurface.fillRect(
+                    ctx.fillStyle = "black";
+                    ctx.fillRect(
                         (that.locationX + x) * tileSize, (that.locationY + y) * tileSize,
                         tileSize,
                         tileSize);
+
+                    ctx.fillStyle = that.color;
+                    ctx.fillRect(
+                        ((that.locationX + x) * tileSize)+1, ((that.locationY + y) * tileSize)+1,
+                        tileSize-2,
+                        tileSize-2);
+
                 }
             }
         }

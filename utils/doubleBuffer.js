@@ -1,15 +1,18 @@
 exports = function(width, height, divId) {
     var bufferSurface = document.createElement("canvas");
+    var sideBarSize = 180;
     var bufferCtx = bufferSurface.getContext("2d");
-    bufferSurface.width = width;
+    bufferSurface.width = width+sideBarSize;
     bufferSurface.height = height;
 
     this.width = width;
     this.height = height;
 
+    this.fullWidth = width + sideBarSize;
+
     var surface = document.createElement("canvas");
     var surfaceCtx = surface.getContext("2d");
-    surface.width = width;
+    surface.width = width + sideBarSize;
     surface.height = height;
     document.getElementById(divId).appendChild(surface);
 

@@ -10,7 +10,7 @@ var Jsetris = function (tileSize, xTiles, yTiles) {
     var modalScreens = [];
 
     //Jsetris!!!!
-    var gameSurface = new DoubleBuffer(tileSize * xTiles, tileSize * yTiles, "board");
+    var gameSurface = new DoubleBuffer(tileSize * xTiles, tileSize * yTiles, "board");    
 
     var gameBoard;
     var currentPiece;
@@ -18,6 +18,7 @@ var Jsetris = function (tileSize, xTiles, yTiles) {
     var gameTime;
     var lineScore;
     var inputDelay = 0.4;
+    var gameState = {};
     var inputTimePassed;
 
     var handleInput = function (timePassed) {
@@ -51,9 +52,9 @@ var Jsetris = function (tileSize, xTiles, yTiles) {
 
     var draw = function () {
         gameSurface.beginDraw();
-        var ctx = gameSurface.getCtx();
-        gameBoard.draw(ctx);
-        currentPiece.draw(ctx);
+        
+        gameBoard.draw(gameSurface);
+        currentPiece.draw(gameSurface);
         if (modalScreens.length > 0) {
             for (var i = modalScreens.length - 1; i >= 0; i--) {
                 modalScreens[i].draw(gameSurface);
@@ -81,16 +82,17 @@ var Jsetris = function (tileSize, xTiles, yTiles) {
         currentPiece = new Piece("red", shapes.select(), tileSize, xTiles, yTiles, gameBoard, onPieceDone);
     };
 
-    var onScore = function (_lineScore) {
-        lineScore += _lineScore;
-        document.getElementById("score").innerText = "Score : " + lineScore + " lines";
+    var onScore = function (lines) {
+        gameState.score += lines;
+        document.getElementById("score").innerText = "Score : " + gameState.score + " lines";
     };
 
     var newGame = function () {
-        lineScore = 0;
+        gameState = {};
+        gameState.score = 0;
         inputTimePassed = 0;
         modalScreens = [];
-        document.getElementById("score").innerText = "Score : " + lineScore + " lines";
+        document.getElementById("score").innerText = "Score : " + gameState.score + " lines";
         gameBoard = new Board(tileSize, xTiles, yTiles, onGameOver, onScore);
         currentPiece = new Piece("red", shapes.select(), tileSize, xTiles, yTiles, gameBoard, onPieceDone);
         gameLoop();
