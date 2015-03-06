@@ -5,7 +5,7 @@
     var lastLoopTime = Date.now();
     var verticalTileCount = 22;
     var horizontalTileCount = 10;
-    var tileSize = 30;
+    var tileSize = 20;
     var state = null;
 
     var update = function (timePassed) {
