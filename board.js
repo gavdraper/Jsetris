@@ -30,28 +30,9 @@ exports = function (state) {
         //Seperator
         ctx.fillRect(state.tileSize * state.horizontalTileCount, 0, 2, state.verticalTileCount * state.tileSize);
 
-
         scoreBox.draw(gameSurface);
-        nextBlockBox.draw(gameSurface);
-        /*
-        //Next Block Area
-        ctx.fillStyle = "blue";
-        ctx.fillRect((state.tileSize * state.horizontalTileCount + 26), 10, 162, 150);
-        ctx.fillStyle = "black";
-        ctx.fillRect((state.tileSize * state.horizontalTileCount + 26) + 2, 10 + 2, 162 - 4, 150 - 4);
-        ctx.font = "bold 15px Georgia";
-        ctx.fillStyle = "#80FF00";
-        ctx.fillText("Score " + score, (state.tileSize * state.horizontalTileCount + 28) + 14, 50);
-        ctx.fillText("High Score", (state.tileSize * state.horizontalTileCount + 28) + 10, 100);
-        //Score Area
-        ctx.fillStyle = "blue";
-        ctx.fillRect((state.tileSize * state.horizontalTileCount + 26), 200, 162, 150);
-        ctx.fillStyle = "black";
-        ctx.fillRect((state.tileSize * state.horizontalTileCount + 26) + 2, 200 + 2, 162 - 4, 150 - 4);
-        ctx.font = "bold 15px Georgia";
-        ctx.fillStyle = "#80FF00";
-        ctx.fillText("Next Piece", (state.tileSize * state.horizontalTileCount + 28) + 14, 230);
-        */
+        nextBlockBox.draw(gameSurface,activePiece.nextShape);
+       
         activePiece.draw(gameSurface);
     };
 

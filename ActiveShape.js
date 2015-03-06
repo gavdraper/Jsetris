@@ -1,8 +1,9 @@
-var Piece = function (state,onLand) {
+exports = function (state, onLand) {
+    var that = this;
     var drawLib = require("utils/blockDrawer");
     var shapes = require("shapes");
     var currentShape;
-    var nextShape = shapes.select();
+    this.nextShape = shapes.select();
     var rotationIndex = 0;
     var previousRotationIndex = 0;
     var locationY;
@@ -11,7 +12,7 @@ var Piece = function (state,onLand) {
     var previousLocationX;
     var fallInterval = 0.50 - (state.score / 100);
     var elapsedFallTime = 0;
-    var leftRightRepeatSpeed = 0.10;
+    var leftRightRepeatSpeed = 0.13;
     var leftRightRepeatTimer = 0;
 
     var onNewPiece = function () {
@@ -19,8 +20,8 @@ var Piece = function (state,onLand) {
             onLand(currentShape.rotations[rotationIndex],locationX,locationY,currentShape.color);
         }
         rotationIndex = 0;
-        currentShape = nextShape;
-        nextShape = shapes.select();
+        currentShape = that.nextShape;
+        that.nextShape = shapes.select();
         locationX = Math.floor(state.horizontalTileCount / 2) - 1;
         locationY = -currentShape.rotations[rotationIndex].length;
         previousLocationX = locationX;
@@ -139,4 +140,3 @@ var Piece = function (state,onLand) {
 
 };
 
-exports = Piece;
