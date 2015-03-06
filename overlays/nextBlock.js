@@ -1,5 +1,5 @@
 ﻿exports = function (state) {
-    var drawLib = require("utils/blockDrawer");
+    var drawLib = require("Utils/BlockDrawer");
 
     this.draw = function (gameSurface,nextPiece) {
         drawLib.outlineRectangle(state.gameWidth + 20, 228, 166, 200, "blue", gameSurface.getCtx());

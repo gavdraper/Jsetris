@@ -1,7 +1,7 @@
 exports = function (state, onLand) {
     var that = this;
-    var drawLib = require("utils/blockDrawer");
-    var shapes = require("shapes");
+    var drawLib = require("Utils/BlockDrawer");
+    var shapes = require("Shapes");
     var currentShape;
     this.nextShape = shapes.select();
     var rotationIndex = 0;

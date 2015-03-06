@@ -1,6 +1,6 @@
 ﻿(function () {
     var GameState = require("GameState");
-    var PauseScreen = require("screens/pauseScreen");
+    var PauseScreen = require("Screens/PauseScreen");
 
     var lastLoopTime = Date.now();
     var verticalTileCount = 22;

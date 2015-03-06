@@ -1,8 +1,8 @@
 ﻿exports = function (horizontalTileCount, verticalTileCount, tileSize) {
     var that = this;
-    var DoubleBuffer = require("utils/DoubleBuffer");
+    var DoubleBuffer = require("Utils/DoubleBuffer");
     var Board = require("Board");
-    this.keyboardInput = require("utils/keyboardInput");
+    this.keyboardInput = require("Utils/KeyboardInput");
     this.score = 0;
     this.horizontalTileCount = horizontalTileCount;
     this.verticalTileCount = verticalTileCount;

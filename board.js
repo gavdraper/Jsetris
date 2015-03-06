@@ -1,8 +1,8 @@
 exports = function (state) {
     var ActiveShape = require("ActiveShape");
-    var ScoreOutline = require("overlays/score");
-    var NextBlockOutline = require("overlays/nextBlock");
-    var drawLib = require("utils/blockDrawer");
+    var ScoreOutline = require("Overlays/Score");
+    var NextBlockOutline = require("Overlays/NextBlock");
+    var drawLib = require("Utils/BlockDrawer");
     var scoreBox = new ScoreOutline(state);
     var nextBlockBox = new NextBlockOutline(state);
     
