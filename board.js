@@ -1,41 +1,25 @@
-exports = function (tileSize, tilesX, tilesY, onGameOver, onScore) {
-    var that = this;
-    this.tiles = [];
-    this.score = 0;
+exports = function (state) {
+    var ActiveShape = require("ActiveShape");
+    var ScoreOutline = require("overlays/score");
+    var NextBlockOutline = require("overlays/nextBlock");
+    var drawLib = require("utils/blockDrawer");
+    var scoreBox = new ScoreOutline(state);
+    var nextBlockBox = new NextBlockOutline(state);
+    
 
-    //for (var i = 0; i < tilesX; i++) {
-    //this.tiles.push([]);
-    //}
-
-    for (var x = 0; x < tilesX; x++) {
-        this.tiles[x] = [];
-        for (var y = 0; y < tilesY; y++) {
-            this.tiles[x][y] = 0;
-        }
+    this.update = function(timePassed) {
+        activePiece.update(timePassed);
     }
-
-    this.update = function (gameTime) {
-    };
 
     this.draw = function (gameSurface) {
         //draw parked pieces        
         var ctx = gameSurface.getCtx();
         ctx.fillStyle = "black";
-        console.log()
         ctx.fillRect(0, 0, gameSurface.fullWidth, gameSurface.height);
-        for (var x = 0; x < that.tiles.length; x++) {
-            for (var y = 0; y < that.tiles[x].length; y++) {
-                if (that.tiles[x][y] !== 0) {
-                    
-                    ctx.fillStyle = "black";
-                    ctx.fillRect(
-                        x * tileSize, y * tileSize, tileSize, tileSize);
-
-                    ctx.fillStyle = that.tiles[x][y];
-                    ctx.fillRect(
-                    (x * tileSize) + 1, (y * tileSize) + 1, tileSize - 2, tileSize - 2);
-
-
+        for (var x = 0; x < state.tiles.length; x++) {
+            for (var y = 0; y < state.tiles[x].length; y++) {
+                if (state.tiles[x][y] !== 0) {
+                    drawLib.drawBlock(state, x, y, state.tiles[x][y], ctx);
                 }
             }
         }
@@ -44,39 +28,42 @@ exports = function (tileSize, tilesX, tilesY, onGameOver, onScore) {
         //Draw Side Bar
         ctx.fillStyle = "blue";
         //Seperator
-        ctx.fillRect(tileSize * tilesX, 0, 2, tilesY * tileSize);
+        ctx.fillRect(state.tileSize * state.horizontalTileCount, 0, 2, state.verticalTileCount * state.tileSize);
 
+
+        scoreBox.draw(gameSurface);
+        nextBlockBox.draw(gameSurface);
+        /*
         //Next Block Area
         ctx.fillStyle = "blue";
-        ctx.fillRect((tileSize * tilesX + 10), 10, 162, 150);
+        ctx.fillRect((state.tileSize * state.horizontalTileCount + 26), 10, 162, 150);
         ctx.fillStyle = "black";
-        ctx.fillRect((tileSize * tilesX + 10) + 2, 10 + 2, 162 - 4, 150 - 4);
+        ctx.fillRect((state.tileSize * state.horizontalTileCount + 26) + 2, 10 + 2, 162 - 4, 150 - 4);
         ctx.font = "bold 15px Georgia";
         ctx.fillStyle = "#80FF00";
-        ctx.fillText("Score", (tileSize * tilesX + 10) + 14, 50);
-        ctx.fillText("High Score", (tileSize * tilesX + 14) + 10, 100);
-    
-
-
+        ctx.fillText("Score " + score, (state.tileSize * state.horizontalTileCount + 28) + 14, 50);
+        ctx.fillText("High Score", (state.tileSize * state.horizontalTileCount + 28) + 10, 100);
         //Score Area
         ctx.fillStyle = "blue";
-        ctx.fillRect((tileSize * tilesX + 10), 200, 162, 150);
+        ctx.fillRect((state.tileSize * state.horizontalTileCount + 26), 200, 162, 150);
         ctx.fillStyle = "black";
-        ctx.fillRect((tileSize * tilesX + 10) + 2, 200 + 2, 162 - 4, 150 - 4);
+        ctx.fillRect((state.tileSize * state.horizontalTileCount + 26) + 2, 200 + 2, 162 - 4, 150 - 4);
         ctx.font = "bold 15px Georgia";
         ctx.fillStyle = "#80FF00";
-        ctx.fillText("Next Piece", (tileSize * tilesX + 10) + 14, 230);
+        ctx.fillText("Next Piece", (state.tileSize * state.horizontalTileCount + 28) + 14, 230);
+        */
+        activePiece.draw(gameSurface);
     };
 
-    this.freezePiece = function (piece) {
-        for (var x = 0; x < piece.blocks.length; x++) {
-            for (var y = 0; y < piece.blocks[x].length; y++) {
-                if (piece.blocks[x][y] !==0) {
+    var freezePiece = function (piece,locationX,locationY,color) {
+        for (var x = 0; x < piece.length; x++) {
+            for (var y = 0; y < piece[x].length; y++) {
+                if (piece[x][y] !==0) {
                     //Add to board
-                    if (piece.locationY < 0) {
-                        onGameOver();
+                    if (locationY < 0) {
+                        state.reset();
                     } else {
-                        that.tiles[piece.locationX + x][piece.locationY + y] = [piece.color];
+                        state.tiles[locationX + x][locationY + y] = [color];
                     }
                 }
             }
@@ -85,13 +72,13 @@ exports = function (tileSize, tilesX, tilesY, onGameOver, onScore) {
         //Find complete lines
         var completedLines = [];
         var completedLineCount = 0;
-        for (var i = 0; i < tilesY; i++) {
+        for (var i = 0; i < state.verticalTileCount; i++) {
             completedLines[i] = 1;
         }
 
-        for (var x = 0; x < that.tiles.length; x++) {
-            for (var y = 0; y < that.tiles[x].length; y++) {
-                if (that.tiles[x][y] === 0) {
+        for (var x = 0; x < state.tiles.length; x++) {
+            for (var y = 0; y < state.tiles[x].length; y++) {
+                if (state.tiles[x][y] === 0) {
                     completedLines[y] = 0;
                 }
             }
@@ -101,11 +88,11 @@ exports = function (tileSize, tilesX, tilesY, onGameOver, onScore) {
             if (completedLines[i] === 1) {
                 //Remove line
                 completedLineCount++;
-                for (var x = 0; x < that.tiles.length; x++) {
+                for (var x = 0; x < state.tiles.length; x++) {
                     //remove completed row
-                    that.tiles[x].splice(i, 1);
+                    state.tiles[x].splice(i, 1);
                     //Add new row to top
-                    that.tiles[x].unshift(0);
+                    state.tiles[x].unshift(0);
 
                 }
 
@@ -113,9 +100,10 @@ exports = function (tileSize, tilesX, tilesY, onGameOver, onScore) {
         }
 
         if (completedLineCount > 0) {
-            this.score += completedLineCount;
-            onScore(completedLineCount);
+            state.score += completedLineCount;
         }
 
     };
+
+    var activePiece = new ActiveShape(state, freezePiece);
 };

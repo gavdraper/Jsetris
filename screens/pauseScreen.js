@@ -1,14 +1,12 @@
-﻿exports = function() {
-    var that = this;
+﻿exports = function(state) {
 
     this.takeControlOfUpdating = true;
-
     this.isDone = false;
 
-    this.update = function (gameTime, keyboard) {
-        var enterState = keyboard.isPressed(keyboard.ENTER);
+    this.update = function () {
+        var enterState = state.keyboardInput.isPressed(state.keyboardInput.ENTER);
         if (enterState.pressed && !enterState.heldDown)
-            that.isDone = true;
+            this.isDone = true;
     };
 
 
@@ -16,10 +14,10 @@
         var ctx = gameSurface.getCtx();
         ctx.font = "bold 25px Georgia";
         ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
-        ctx.fillRect(0, 0, gameSurface.width, gameSurface.height);
-        ctx.textAlign = "center";
+        ctx.fillRect(0, 0, state.gameWidth, state.gameHeight);
+        
         ctx.fillStyle = "#80FF00";
-        ctx.fillText("Paused", gameSurface.width / 2, gameSurface.height / 2);
+        ctx.fillText("Paused", (state.gameWidth / 2)-50, state.gameHeight / 2);
     };
 
 };

@@ -1,19 +1,19 @@
-exports = function(width, height, divId) {
+exports = function(state, divId) {
     var bufferSurface = document.createElement("canvas");
     var sideBarSize = 180;
     var bufferCtx = bufferSurface.getContext("2d");
-    bufferSurface.width = width+sideBarSize;
-    bufferSurface.height = height;
+    bufferSurface.width = state.fullGameWidth;
+    bufferSurface.height = state.gameHeight;
 
-    this.width = width;
-    this.height = height;
+    this.width = state.fullGameWidth;
+    this.height = state.gameHeight;
 
-    this.fullWidth = width + sideBarSize;
+    this.fullWidth = state.fullGameWidth + sideBarSize;
 
     var surface = document.createElement("canvas");
     var surfaceCtx = surface.getContext("2d");
-    surface.width = width + sideBarSize;
-    surface.height = height;
+    surface.width = state.fullGameWidth;
+    surface.height = state.gameHeight;
     document.getElementById(divId).appendChild(surface);
 
     var drawing = false;

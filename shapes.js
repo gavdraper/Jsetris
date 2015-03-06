@@ -1,4 +1,3 @@
-var Piece = require("piece");
 var shapes = function () {
     var collection = [];
 
